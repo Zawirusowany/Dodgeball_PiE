@@ -27,10 +27,11 @@ class Player(pygame.sprite.Sprite):
         Player.player_images = (Player.player_img_right_direction, Player.player_img_left_direction,
                                 Player.player_img_up_direction, Player.player_img_down_direction)
 
-    def __init__(self, team, x, y, bench=False):
+    def __init__(self, team, x, y,force, bench=False):
         pygame.sprite.Sprite.__init__(self)
         self.team = int(team)
         self.bench = bench
+        self.force=force
 
         if team:
             self.color = 'red'

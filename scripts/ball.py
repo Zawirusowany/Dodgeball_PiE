@@ -22,6 +22,7 @@ class Ball(pygame.sprite.Sprite):
         self.dvel = pygame.math.Vector2
         self.danger = True
         self.caught_by_player = None
+        self.throw_force=5
 
     def def_vel(self, x_vel, y_vel):
         self.vel = pygame.math.Vector2(x_vel, y_vel)
@@ -58,6 +59,7 @@ class Ball(pygame.sprite.Sprite):
             player = collision[0]
             if not self.danger:
                 self.caught_by_player = player
+                self.throw_force=player.force
                 player.bench = False
             else:
                 self.caught_by_player = None
@@ -69,7 +71,7 @@ class Ball(pygame.sprite.Sprite):
             cue.visible = True
             self.rect.center = self.caught_by_player.rect.center
         else:
-            # self.vel *= self.DECELERATION
+            self.vel *= self.DECELERATION
             self.rect.center += self.vel
             self.speed = pygame.math.Vector2.length(self.vel)
             if self.speed < 2:
@@ -78,8 +80,8 @@ class Ball(pygame.sprite.Sprite):
                 self.danger = True
 
     def throw_a_ball(self, cue):
-        throwing_x_vel = -math.cos(math.radians(cue.angle)) * 5
-        throwing_y_vel = math.sin(math.radians(cue.angle)) * 5
+        throwing_x_vel = -math.cos(math.radians(cue.angle)) * self.throw_force
+        throwing_y_vel = math.sin(math.radians(cue.angle)) * self.throw_force
         # can be force*x_impulse, y_impulse depending on a player
         self.def_vel(throwing_x_vel, throwing_y_vel)
         self.caught_by_player = None

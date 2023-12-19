@@ -1,5 +1,5 @@
 import pygame
-from random import randint, seed
+from random import randint, seed, uniform
 from player import Player
 from obstacle import Obstacle, Midline, DestroyableObstacle
 from ball import Ball
@@ -196,14 +196,14 @@ def main():
             team_with_ball = randint(LEFT, RIGHT)
             if team_with_ball == RIGHT:
                 for xy in players_right_offensive_coords:
-                    team_right.append(Player(RIGHT, xy[0], xy[1]))
+                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(3,5)))
                 for xy in players_left_defensive_coords:
-                    team_left.append(Player(LEFT, xy[0], xy[1]))
+                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(3,5)))
             else:
                 for xy in players_left_offensive_coords:
-                    team_left.append(Player(LEFT, xy[0], xy[1]))
+                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(3,5)))
                 for xy in players_right_defensive_coords:
-                    team_right.append(Player(RIGHT, xy[0], xy[1]))
+                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(3,5)))
 
             all_players.add(team_right, team_left)
             players_playing.add(all_players)
