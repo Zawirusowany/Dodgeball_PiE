@@ -74,27 +74,27 @@ class Ball(pygame.sprite.Sprite):
             self.vel *= self.DECELERATION
             self.rect.center += self.vel
             self.speed = pygame.math.Vector2.length(self.vel)
-            if self.speed < 2:
+            if self.speed < 3:
                 self.danger = False
             else:
                 self.danger = True
 
-    def throw_a_ball(self, cue):
-        throwing_x_vel = -math.cos(math.radians(cue.angle)) * self.throw_force
-        throwing_y_vel = math.sin(math.radians(cue.angle)) * self.throw_force
+    def throw_a_ball(self, stick):
+        throwing_x_vel = -math.cos(math.radians(stick.angle)) * self.throw_force
+        throwing_y_vel = math.sin(math.radians(stick.angle)) * self.throw_force
         # can be force*x_impulse, y_impulse depending on a player
         self.def_vel(throwing_x_vel, throwing_y_vel)
         self.caught_by_player = None
         self.danger = True
-        cue.visible = False
+        stick.visible = False
 
 
-class Cue(pygame.sprite.Sprite):
+class Stick(pygame.sprite.Sprite):
     def __init__(self, pos):
         pygame.sprite.Sprite.__init__(self)
-        self.cue_original_img = pygame.image.load(os.path.join('Assets', 'players', 'cue.png')).convert_alpha()
+        self.stick_original_img = pygame.image.load(os.path.join('Assets', 'players', 'cue.png')).convert_alpha()
         self.angle = 0
-        self.image = pygame.transform.rotate(self.cue_original_img, self.angle)
+        self.image = pygame.transform.rotate(self.stick_original_img, self.angle)
         self.rect = self.image.get_rect(center=pos)
         self.visible = False
 
@@ -106,6 +106,6 @@ class Cue(pygame.sprite.Sprite):
             y_dist = ball.rect.center[1] - mouse_pos[1]
             self.angle = -math.degrees(math.atan2(y_dist, x_dist))
 
-            self.image = pygame.transform.rotate(self.cue_original_img, self.angle)
+            self.image = pygame.transform.rotate(self.stick_original_img, self.angle)
             surface.blit(self.image, (self.rect.centerx - self.image.get_width() / 2,
                                       self.rect.centery - self.image.get_height() / 2))

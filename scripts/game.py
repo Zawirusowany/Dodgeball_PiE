@@ -2,8 +2,7 @@ import pygame
 from random import randint, seed, uniform
 from player import Player
 from obstacle import Obstacle, Midline, DestroyableObstacle
-from ball import Ball
-from ball import Cue
+from ball import Ball, Stick
 from constant_values import (SCREEN_WIDTH, SCREEN_HEIGHT, BORDERS_PARAMETER, LEFT, RIGHT,
                              MAX_HEIGHT_OBSTACLE, MAX_WIDTH_OBSTACLE, BORDER_COLOR, SCOREBOARD)
 from marker import Marker
@@ -148,12 +147,12 @@ def main():
     obstacles_player = pygame.sprite.Group()
     ball_obstacles = pygame.sprite.Group()
     ball_sprite = pygame.sprite.GroupSingle()
-    cue_sprite = pygame.sprite.GroupSingle()
+    stick_sprite = pygame.sprite.GroupSingle()
 
     ball = Ball(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-    cue = Cue(ball.rect.center)
+    stick = Stick(ball.rect.center)
     ball_sprite.add(ball)
-    cue_sprite.add(cue)
+    stick_sprite.add(stick)
     
     players_right_offensive_coords = [(3 * SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4),
                                       (7 * SCREEN_WIDTH / 10, SCREEN_HEIGHT / 2),
@@ -196,14 +195,14 @@ def main():
             team_with_ball = randint(LEFT, RIGHT)
             if team_with_ball == RIGHT:
                 for xy in players_right_offensive_coords:
-                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(3,5)))
+                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(6,8)))
                 for xy in players_left_defensive_coords:
-                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(3,5)))
+                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(6,8)))
             else:
                 for xy in players_left_offensive_coords:
-                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(3,5)))
+                    team_left.append(Player(LEFT, xy[0], xy[1],uniform(6,8)))
                 for xy in players_right_defensive_coords:
-                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(3,5)))
+                    team_right.append(Player(RIGHT, xy[0], xy[1],uniform(6,8)))
 
             all_players.add(team_right, team_left)
             players_playing.add(all_players)
@@ -228,7 +227,7 @@ def main():
             player_in_control.move(obstacles_player, players_playing, marker)
             player_in_control.catch_ball(ball, events)
 
-            ball.move(cue)
+            ball.move(stick)
             ball.maintain_collision_obstacle(ball_obstacles)
 
             if ball.check_collision_player(players_playing):
@@ -236,10 +235,10 @@ def main():
             if not team_left or not team_right:
                 stage = ENDGAME
 
-            cue.update(SCREEN, ball)
+            stick.update(SCREEN, ball)
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    ball.throw_a_ball(cue)
+                    ball.throw_a_ball(stick)
 
         elif stage == ENDGAME:
             if not team_left:
